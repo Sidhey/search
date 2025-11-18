@@ -183,6 +183,24 @@ button:not(:disabled):hover {
   width: 100%;
 }
 
+.panel-footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.doc-count {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.doc-count strong {
+  color: var(--text);
+}
+
 .results {
   margin-top: 24px;
   display: flex;

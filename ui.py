@@ -47,17 +47,22 @@ def _resolve_limit(candidate: int | None) -> int:
     return max(MIN_RESULT_LIMIT, min(MAX_RESULT_LIMIT, limit_value))
 
 
-def run_vespa_query(query: str, limit: int | None = None, ranking: str | None = None) -> Dict[str, Any]:
+def run_vespa_query(
+    query: str, limit: int | None = None, ranking: str | None = None
+) -> Dict[str, Any]:
     """Execute the Vespa search using the provided query string."""
     effective_limit = _resolve_limit(limit)
     ranking_profile = ranking or "bm25"
     client = get_vespa_client()
+    query_body = {
+        "yql": "select * from sources * where userQuery()",
+        "hits": effective_limit,
+        "query": query,
+        "ranking": {"profile": ranking_profile},
+        "presentation": {"timing": True},
+    }
     with client.syncio(connections=1) as session:
-        response = session.query(
-            yql=f"select * from sources * where userQuery() limit {effective_limit}",
-            query=query,
-            ranking=ranking_profile,
-        )
+        response = session.query(body=query_body)
 
     response_json = _safe_json(response)
     print(response_json)  # Debug output
@@ -111,7 +116,15 @@ def _extract_total_hits(response_json: Dict[str, Any]) -> int:
 def _extract_latency(response_json: Dict[str, Any]) -> float:
     timing = response_json.get("timing", {})
     total = timing.get("total") or timing.get("querytime")
-    return round(float(total), 3) if total is not None else 0.0
+    if total is None:
+        return 0.0
+    try:
+        total_value = float(total)
+    except (TypeError, ValueError):
+        return 0.0
+    # Vespa timing numbers are in seconds; convert to ms, but allow larger values (already ms) to pass through.
+    latency_ms = total_value * 1000 if total_value < 10 else total_value
+    return round(latency_ms, 3)
 
 
 def _safe_json(response: Any) -> Dict[str, Any]:
@@ -137,6 +150,26 @@ def _normalize_document_id(document_id: Any) -> str | None:
     return document_id
 
 
+@lru_cache
+def get_total_documents() -> int | None:
+    """Fetch total number of indexed documents (cached)."""
+    client = get_vespa_client()
+    try:
+        with client.syncio(connections=1) as session:
+            response = session.query(
+                yql="select * from sources * where true limit 0",
+                hits=0,
+                ranking="bm25",
+            )
+        data = _safe_json(response)
+        root = data.get("root", {}) or {}
+        fields = root.get("fields", {}) or {}
+        total = fields.get("totalCount")
+        return int(total) if total is not None else None
+    except Exception:
+        return None
+
+
 app = FastAPI(title="Simple Search UI", version="0.1.0")
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
@@ -149,6 +182,7 @@ async def home(request: Request) -> HTMLResponse:
             "request": request,
             "default_limit": RESULT_LIMIT,
             "max_limit": MAX_RESULT_LIMIT,
+            "total_documents": get_total_documents(),
         },
     )
 

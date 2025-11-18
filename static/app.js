@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     summary.innerHTML = `
       <span><strong>${hits.length}</strong> shown</span>
       <span><strong>${total_available}</strong> total</span>
-      <span>latency <strong>${latency_ms.toFixed(2)} ms</strong></span>
+      <span>latency <strong>${Number(latency_ms || 0).toFixed(3)} ms</strong></span>
       ${ranking_profile ? `<span>ranking <strong>${ranking_profile}</strong></span>` : ""}
     `;
     resultsEl.appendChild(summary);
